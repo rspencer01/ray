@@ -107,8 +107,10 @@ void trace(ray &ry)
 int main()
 {
   init_raylog();
+
+  FILE* outputFile = fopen("out.ppm","wb");
   // Output preamble
-  printf("P6 %d %d 255 ",SIZE,SIZE);
+  fprintf(outputFile,"P6 %d %d 255 ",SIZE,SIZE);
   // Camera viewpoint
   v viewpoint = v(0,0,-1);
   // Iterate through all pixels in screen
@@ -128,7 +130,8 @@ int main()
       pixel.y = atan(pixel.y/100)/(3.1415/2)*255;
       pixel.z = atan(pixel.z/100)/(3.1415/2)*255;
       // Output to image
-      printf("%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
+      fprintf(outputFile,"%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
     }
+  fclose(outputFile);
   print_raylog();
 }
