@@ -9,7 +9,7 @@
 
 scene current_scene;
 
-float d = 1e-2;
+double d = 1e-2;
 #define RAY_LENGTH 10
 void trace(ray&);
 
@@ -27,11 +27,17 @@ voxel integrand(v pos, v dir, int level,ray calling)
   return ans;
 }
 
-v nextPosition(v position, v direction, float maxD)
+v nextPosition(v position, v direction, double maxD)
 {
-  float minLambda = maxD;
+  double minLambda = maxD;
   for (int i = 0; i<current_scene.spheres.size(); ++i)
   {
+    if ((position - current_scene.spheres[i].position)%
+        (position - current_scene.spheres[i].position) < current_scene.spheres[i].rayRadius*current_scene.spheres[i].rayRadius)
+    {
+      minLambda = d;
+      break;
+    }
     if (intersectSphere(current_scene.spheres[i].position,
                         current_scene.spheres[i].rayRadius,
                         position,
@@ -46,8 +52,8 @@ v nextPosition(v position, v direction, float maxD)
                                                direction));
     }
   }
-  minLambda -= 3*d;
-  if (minLambda < d) minLambda = d;
+  minLambda-=4*d;
+  if (minLambda < 4*d) minLambda = d;
   return position + !direction * minLambda;
 }
 
@@ -59,7 +65,7 @@ void trace(ray &ry)
   // Log that we executed this ray
   log_ray_start(ry);
 
-  float p = 1;
+  double p = 1;
   // Begin with black
   // TODO can we change this up?
   v color = v(0,0,0);
@@ -118,7 +124,7 @@ int main()
     for(int x=SIZE; x--;)
     {
       // Calculate the direction for this pixel
-      v direction = calculateDirection(x/(float)SIZE, y/(float)SIZE);
+      v direction = calculateDirection(x/(double)SIZE, y/(double)SIZE);
       // Construct the ray
       ray primary = ray(viewpoint, direction, v(0,0,0), 0);
       // Trace the ray

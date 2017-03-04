@@ -20,7 +20,7 @@ struct sphere
     parentScene = _parentScene;
     position = v(2*R()-1,2*R()-1,R()+1);
     radius = R()/6;
-    rayRadius = radius;
+    rayRadius = radius*1.01;
   };
   voxel intersects(v position, v nextPosition, v direction, ray& callingRay);
 };
