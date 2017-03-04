@@ -12,10 +12,8 @@ $(TARGET): $(OBJS)
 
 $(OBJS): | $(BUILD_DIR)
 
-$(BUILD_DIR): FORCE
+$(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
-
-FORCE:
 
 $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $< -c $(CFLAGS) -o $@
