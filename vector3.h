@@ -2,53 +2,24 @@
 #define __VECTOR3_H__
 
 #include <math.h>
-
-struct v
+struct vector3
 {
   float x,y,z;
-  v operator+(v r)
-  {
-    return v(x+r.x, y+r.y, z+r.z);
-  }
-  v operator-(v r)
-  {
-    return v(x-r.x, y-r.y, z-r.z);
-  }
-  v operator*(float r)
-  {
-    return v(x*r, y*r, z*r);
-  }
-  v operator*(v r)
-  {
-    return v(x*r.x, y*r.y, z*r.z);
-  }
-  v operator&(v r)
-  {
-    return v(x*r.x, y*r.y, z*r.z);
-  }
-
+  vector3();
+  vector3(float a,float b,float c);
+  vector3 operator+(vector3 r);
+  vector3 operator-(vector3 r);
+  vector3 operator*(float r);
+  vector3 operator*(vector3 r);
+  vector3 operator&(vector3 r);
   // Dot product
-  float operator%(v r)
-  {
-    return x*r.x + y*r.y + z*r.z;
-  }
-  v(){}
+  float operator%(vector3 r);
   // Cross product
-  v operator^(v r)
-  {
-    return v(y*r.z-z*r.y, z*r.x-x*r.z, x*r.y-y*r.x);
-  }
-  v(float a,float b,float c)
-  {
-    x=a;
-    y=b;
-    z=c;
-  }
+  vector3 operator^(vector3 r);
   // Normalise
-  v operator!()
-  {
-    return *this*(1/sqrt(*this%*this));
-  }
+  vector3 operator!();
 };
+
+typedef vector3 v;
 
 #endif
