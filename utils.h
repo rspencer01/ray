@@ -2,8 +2,6 @@
 #define __UTILS_H__
 typedef int i;
 typedef double f;
-#define max(_a,_b) ((_a)>(_b)?(_a):(_b))
-#define min(_a,_b) ((_a)<(_b)?(_a):(_b))
 #define posmod(_a,_b) (((_b)+((_a)%(_b)))%(_b))
 
 #include "vector3.h"
