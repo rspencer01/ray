@@ -2,16 +2,16 @@
 #define __MATERIAL_H__
 
 #include "utils.h"
+#include "ray.h"
+
+struct scene;
 
 struct material
 {
   v color;
   float reflectivity;
-  material()
-  {
-    color = v(R(),R()/3,R()/2);
-    reflectivity = R()*0.8;
-  };
+  material();
+  voxel getInteraction(v position, v normal, v direction, ray& callingRay, scene* parentScene);
 };
 
 #endif

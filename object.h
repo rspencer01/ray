@@ -1,5 +1,7 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
+#include "vector3.h"
+#include "ray.h"
 
 struct scene;
 
@@ -12,15 +14,4 @@ struct object
   virtual voxel intersects(v position, v nextPosition, v direction, ray& callingRay);
 };
 
-object::object(scene* _parentScene)
-{
-  parentScene = _parentScene;
-  position = v(0,0,0);
-  rayRadius = 0;
-}
-
-voxel object::intersects(v position, v nextPosition, v direction, ray& callingRay)
-{
-  return voxel();
-}
 #endif
