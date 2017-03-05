@@ -5,17 +5,15 @@
 #include "utils.h"
 #include "ray.h"
 #include "material.h"
+#include "object.h"
 
 struct scene;
 
-struct sphere
+struct sphere : public object
 {
-  v position;
   float radius;
-  float rayRadius;
   material mat;
-  scene* parentScene;
-  sphere(scene* _parentScene)
+  sphere(scene* _parentScene) : object(_parentScene)
   {
     parentScene = _parentScene;
     position = v(2*R()-1,2*R()-1,R()+1);

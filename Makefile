@@ -1,5 +1,5 @@
 CXX=g++-4.6
-CFLAGS=-O3 -MMD -lm
+CFLAGS=-O3 -MMD -lm --std=c++0x
 TARGET=ray
 BUILD_DIR=build
 SRCS=$(shell find . -name "*.cpp")
