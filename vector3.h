@@ -22,4 +22,6 @@ struct vector3
 
 typedef vector3 v;
 
+float norm(vector3);
+
 #endif

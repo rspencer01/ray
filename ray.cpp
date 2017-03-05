@@ -32,8 +32,7 @@ v nextPosition(v position, v direction, double maxD)
   double minLambda = maxD;
   for (object* o : current_scene.spheres)
   {
-    if ((position - o->position)%
-        (position - o->position) < o->rayRadius*o->rayRadius)
+    if (norm(position - o->position) < o->rayRadius)
     {
       minLambda = d;
       break;

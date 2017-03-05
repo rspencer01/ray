@@ -3,10 +3,10 @@
 
 bool sphere::intersects(v position, v nextPosition)
 {
-  float currentRadius2 = (position - this->position)%(position - this->position);
-  float nextRadius2 = (nextPosition - this->position)%(nextPosition - this->position);
-  return (currentRadius2 > this->radius * this->radius)
-          and (nextRadius2 < this->radius * this->radius);
+  float currentRadius = norm(position - this->position);
+  float nextRadius = norm(nextPosition - this->position);
+  return (currentRadius > this->radius)
+          and (nextRadius < this->radius);
 }
 
 v sphere::getNormal(v position, v nextPosition)

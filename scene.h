@@ -35,9 +35,10 @@ struct scene
     ((sphere*)spheres[NUM_SPHERES-1])->mat.color = v(.2,.1,0);
     ((sphere*)spheres[NUM_SPHERES-1])->mat.reflectivity = 0.1;
   }
+
   v boundryColour(v position, v direction)
   {
-    if (position%position < 64)
+    if (norm(position) < 8)
       return v(0,0,0);
     if (!direction % !sundir > 0.98)
       return v(9,9,9);

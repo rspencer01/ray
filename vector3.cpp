@@ -50,5 +50,10 @@ vector3 vector3::operator^(vector3 r)
 // Normalise
 vector3 vector3::operator!()
 {
-  return *this*(1/sqrt(*this%*this));
+  return *this*(1/norm(*this));
+}
+
+float norm(vector3 a)
+{
+  return sqrt(a%a);
 }
