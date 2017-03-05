@@ -9,5 +9,18 @@ object::object(scene* _parentScene)
 
 voxel object::intersects(v position, v nextPosition, v direction, ray& callingRay)
 {
-  return voxel();
+  if (!intersects(position, nextPosition))
+    return voxel();
+  v normal = getNormal(position, nextPosition);
+  return mat.getInteraction(position, normal, direction, callingRay, parentScene);
+}
+
+bool object::intersects(v position, v nextPosition)
+{
+  return false;
+}
+
+v object::getNormal(v position, v nextPosition)
+{
+  return v();
 }

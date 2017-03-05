@@ -12,7 +12,6 @@ struct scene;
 struct sphere : public object
 {
   float radius;
-  material mat;
   sphere(scene* _parentScene) : object(_parentScene)
   {
     parentScene = _parentScene;
@@ -20,7 +19,8 @@ struct sphere : public object
     radius = R()/6;
     rayRadius = radius*1.01;
   };
-  voxel intersects(v position, v nextPosition, v direction, ray& callingRay);
+  bool intersects(v position, v nextPosition);
+  v getNormal(v position, v nextPosition);
 };
 
 #endif
