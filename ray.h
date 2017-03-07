@@ -12,11 +12,13 @@ struct ray
   bool completed;
   int level;
   bool alive;
+  long hash;
 
   ray()
   {
     completed = false;
     alive = true;
+    hash = rand();
   };
   ray(v _position, v _direction, v _color=v(0,0,0), int _level=0)
   {
@@ -26,6 +28,7 @@ struct ray
     level = _level;
     completed = false;
     alive = true;
+    hash = rand();
   };
 };
 
