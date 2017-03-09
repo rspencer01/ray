@@ -19,7 +19,7 @@ struct sphere : public object
     radius = R()/6;
     rayRadius = radius*1.01;
   };
-  bool intersects(v position, v nextPosition);
+  bool inside(v position);
   v getNormal(v position, v nextPosition);
 };
 

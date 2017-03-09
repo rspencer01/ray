@@ -18,11 +18,6 @@ bool cube::inside(v position)
            sideLength/2 >  position.z - this->position.z);
 }
 
-bool cube:: intersects(v position, v nextPosition)
-{
-  return inside(nextPosition) and not inside(position);
-}
-
 v cube::getNormal(v position, v nextPosition)
 {
   if (position.x - this->position.x < -sideLength/2)

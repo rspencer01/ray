@@ -1,11 +1,8 @@
 #include "sphere.h"
 
-bool sphere::intersects(v position, v nextPosition)
+bool sphere::inside(v position)
 {
-  float currentRadius = norm(position - this->position);
-  float nextRadius = norm(nextPosition - this->position);
-  return (currentRadius > this->radius)
-          and (nextRadius < this->radius);
+  return norm(position - this->position) < this->radius;
 }
 
 v sphere::getNormal(v position, v nextPosition)

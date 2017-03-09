@@ -18,6 +18,8 @@ struct scene
     sundir = !v(1.3,1,-0.4);
     for (int i = 0; i< 10; ++i)
       objects.push_back(new cube(this));
+    for (int i = 0; i< 10; ++i)
+      objects.push_back(new sphere(this));
 
   }
 

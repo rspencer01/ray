@@ -14,6 +14,7 @@ struct object
   material mat;
   object(scene* _parentScene);
   virtual voxel intersects(v position, v nextPosition, v direction, ray& callingRay);
+  virtual bool inside(v position);
   virtual bool intersects(v position, v nextPosition);
   virtual v getNormal(v position, v nextPosition);
 };

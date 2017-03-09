@@ -11,7 +11,6 @@ struct cube : public object
   float sideLength;
   cube(scene* _parentScene);
   bool inside(v position);
-  bool intersects(v position, v nextPosition);
   v getNormal(v position, v nextPosition);
 };
 

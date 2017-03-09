@@ -17,10 +17,15 @@ voxel object::intersects(v position, v nextPosition, v direction, ray& callingRa
 
 bool object::intersects(v position, v nextPosition)
 {
-  return false;
+  return not inside(position) and inside(nextPosition);
 }
 
 v object::getNormal(v position, v nextPosition)
 {
   return v();
+}
+
+bool object::inside(v position)
+{
+  return false;
 }
