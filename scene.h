@@ -5,8 +5,7 @@
 #include "vector3.h"
 #include "sphere.h"
 #include "object.h"
-
-#define NUM_SPHERES 10
+#include "cube.h"
 
 struct scene
 {
@@ -17,23 +16,9 @@ struct scene
   {
     ambient = 0.1;
     sundir = !v(1.3,1,-0.4);
-    for (int i = 0; i< NUM_SPHERES;++i)
-      spheres.push_back(new sphere(this));
-    ((sphere*)spheres[0])->position = v(.8,0,2);
-    ((sphere*)spheres[0])->radius = 0.5;
-    ((sphere*)spheres[0])->rayRadius = 0.505;
-    ((sphere*)spheres[0])->mat.color = v(0,0.1,0);
-    ((sphere*)spheres[0])->mat.reflectivity = 0.13;
-    ((sphere*)spheres[1])->position = v(-.8,-.1,2.05);
-    ((sphere*)spheres[1])->radius = 0.5;
-    ((sphere*)spheres[1])->rayRadius = 0.505;
-    ((sphere*)spheres[1])->mat.color = v(0,0,0.1);
-    ((sphere*)spheres[1])->mat.reflectivity = 0.15;
-    ((sphere*)spheres[NUM_SPHERES-1])->position = v(0,-201,0);
-    ((sphere*)spheres[NUM_SPHERES-1])->radius = 200.5;
-    ((sphere*)spheres[NUM_SPHERES-1])->rayRadius = 200.505;
-    ((sphere*)spheres[NUM_SPHERES-1])->mat.color = v(.2,.1,0);
-    ((sphere*)spheres[NUM_SPHERES-1])->mat.reflectivity = 0.1;
+    for (int i = 0; i< 10; ++i)
+      objects.push_back(new cube(this));
+
   }
 
   v boundryColour(v position, v direction)
