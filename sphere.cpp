@@ -1,5 +1,4 @@
 #include "sphere.h"
-#include "scene.h"
 
 bool sphere::intersects(v position, v nextPosition)
 {

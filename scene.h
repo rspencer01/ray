@@ -10,7 +10,7 @@
 struct scene
 {
   v sundir;
-  std::vector<object*> spheres;
+  std::vector<object*> objects;
   float ambient;
   scene()
   {

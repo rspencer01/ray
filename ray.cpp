@@ -16,7 +16,7 @@ void trace(ray&);
 voxel integrand(v pos, v dir, int level,ray calling)
 {
   voxel ans;
-  for (object* o : current_scene.spheres)
+  for (object* o : current_scene.objects)
   {
     voxel p = o->intersects(pos, pos+dir*d,dir,calling);
     if (p.perm>-0)
@@ -30,7 +30,7 @@ voxel integrand(v pos, v dir, int level,ray calling)
 v nextPosition(v position, v direction, double maxD)
 {
   double minLambda = maxD;
-  for (object* o : current_scene.spheres)
+  for (object* o : current_scene.objects)
   {
     if (norm(position - o->position) < o->rayRadius)
     {
