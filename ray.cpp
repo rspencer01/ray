@@ -71,8 +71,8 @@ void trace(ray &ry)
   // The position used during integration
   v position = ry.position;
   while ((position-ry.position)%(position-ry.position) < RAY_LENGTH*RAY_LENGTH)
-
   {
+    log_ray_integrate(ry);
     voxel immediate;
     // Calculate the color at this point in space (`immediate`) along
     // with its alpha (`trans`)
