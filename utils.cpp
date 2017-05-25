@@ -29,7 +29,7 @@ bool intersectSphere(v center, double R, v start, v direction)
   v v0 = start-center;
   double c = (v0%v0) - R*R;
   double b = v0 % direction * 2;
-  return (b*b >= 4*c) && (-b-sqrt(b*b-4*c) >= 0);
+  return (b*b >= 4*c) && (-b-sqrtl(b*b-4*c) >= 0);
 }
 
 double intersectSphereDist(v center, double R, v start, v direction)
@@ -38,6 +38,6 @@ double intersectSphereDist(v center, double R, v start, v direction)
   v v0 = start-center;
   double c = (v0%v0) - R*R;
   double b = v0 % direction * 2;
-  double lambda = (-b-sqrt(b*b-4*c))/2;
+  double lambda = (-b-sqrtl(b*b-4*c))/2;
   return lambda;
 }

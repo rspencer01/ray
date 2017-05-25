@@ -11,7 +11,7 @@ struct scene;
 
 struct sphere : public object
 {
-  float radius;
+  double radius;
   sphere(scene* _parentScene) : object(_parentScene)
   {
     parentScene = _parentScene;
