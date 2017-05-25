@@ -4,16 +4,16 @@
 #include <math.h>
 struct vector3
 {
-  float x,y,z;
+  double x,y,z;
   vector3();
-  vector3(float a,float b,float c);
+  vector3(double a,double b,double c);
   vector3 operator+(vector3 r);
   vector3 operator-(vector3 r);
-  vector3 operator*(float r);
+  vector3 operator*(double r);
   vector3 operator*(vector3 r);
   vector3 operator&(vector3 r);
   // Dot product
-  float operator%(vector3 r);
+  double operator%(vector3 r);
   // Cross product
   vector3 operator^(vector3 r);
   // Normalise
@@ -22,6 +22,6 @@ struct vector3
 
 typedef vector3 v;
 
-float norm(vector3);
+double norm(vector3);
 
 #endif

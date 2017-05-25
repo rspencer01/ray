@@ -9,7 +9,7 @@ struct scene;
 struct object
 {
   v position;
-  float rayRadius;
+  double rayRadius;
   scene* parentScene;
   material mat;
   object(scene* _parentScene);

@@ -34,7 +34,7 @@ struct ray
 
 struct voxel
 {
-  float perm;
+  double perm;
   v local_color;
   std::vector<std::pair<ray,v> > ray_contributions;
   voxel()
@@ -42,7 +42,7 @@ struct voxel
     perm = 0.;
     ray_contributions.clear();
   };
-  voxel(float _perm, v _local_color=v(0,0,0))
+  voxel(double _perm, v _local_color=v(0,0,0))
   {
     perm = _perm;
     local_color = _local_color;
