@@ -106,23 +106,28 @@ void trace(ray &ry)
   log_ray_end(ry);
 }
 
-#define SIZE 208
-
 int main()
 {
   init_raylog();
 
   FILE* outputFile = fopen("out.ppm","wb");
   // Output preamble
-  fprintf(outputFile,"P6 %d %d 255 ",SIZE,SIZE);
+  fprintf(outputFile,"P6 %d %d 255 ",current_scene.width ,current_scene.height);
   // Camera viewpoint
   v viewpoint = v(0,0,-1);
   // Iterate through all pixels in screen
-  for(int y=SIZE; y--;)
-    for(int x=SIZE; x--;)
+  for(int y=current_scene.height; y--;)
+  {
+    // Pretty progress bar
+    for (int i = 80 - 80*y/current_scene.height; i--;)
+      printf("o");
+    for (int i = 80*y/current_scene.height; i--;)
+      printf(".");
+    printf("\r"); fflush(stdout);
+    for(int x=current_scene.width; x--;)
     {
       // Calculate the direction for this pixel
-      v direction = calculateDirection(x/(double)SIZE, y/(double)SIZE);
+      v direction = calculateDirection(x/(double)current_scene.width, y/(double)current_scene.height);
       // Construct the ray
       ray primary = ray(viewpoint, direction, v(0,0,0), 0);
       // Trace the ray
@@ -136,6 +141,7 @@ int main()
       // Output to image
       fprintf(outputFile,"%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
     }
+  }
   fclose(outputFile);
   print_raylog();
 }
