@@ -51,8 +51,7 @@ v nextPosition(v position, v direction, double maxD)
                                                direction));
     }
   }
-  minLambda-=4*d;
-  if (minLambda < 4*d) minLambda = d;
+  minLambda = std::max(d, minLambda);
   return position + !direction * minLambda;
 }
 
@@ -89,7 +88,7 @@ void trace(ray &ry)
     p *= clamp(1-immediate.perm,0,1);
     // If any of the objects just hit killed the ray, break out of this
     // loop
-    if (not ry.alive) break;
+    if (not ry.alive or p < 0.001) break;
     // Update the inegration position
     position = nextPosition(position, ry.direction, RAY_LENGTH);
   }

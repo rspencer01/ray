@@ -10,6 +10,7 @@ struct material
 {
   v color;
   float reflectivity;
+  float transmittance;
   material();
   voxel getInteraction(v position, v normal, v direction, ray& callingRay, scene* parentScene);
 };
