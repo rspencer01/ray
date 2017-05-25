@@ -13,6 +13,7 @@ struct scene
   float ambient;
   scene();
   v boundryColour(v position, v direction);
+  void loadFromFile(const char*);
 };
 
 #endif

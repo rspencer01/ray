@@ -12,6 +12,8 @@ scene current_scene;
 double d = 1e-2;
 #define RAY_LENGTH 10
 void trace(ray&);
+const char* _help =
+"Usage: ray <scenefile>";
 
 voxel integrand(v pos, v dir, int level,ray calling)
 {
@@ -106,8 +108,15 @@ void trace(ray &ry)
   log_ray_end(ry);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+  if (argc != 2)
+  {
+    fprintf(stderr, _help);
+    return 1;
+  }
+  current_scene.loadFromFile(argv[1]);
+
   init_raylog();
 
   FILE* outputFile = fopen("out.ppm","wb");

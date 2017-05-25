@@ -24,7 +24,6 @@ scene::scene()
   objects.back()->mat.color = v(0.1,0.2,0.1);
 }
 
-
 v scene::boundryColour(v position, v direction)
 {
   if (norm(position) < 8)
@@ -33,4 +32,45 @@ v scene::boundryColour(v position, v direction)
     return v(9,9,9);
   else
     return v(0,0,0);
+}
+
+void scene::loadFromFile(const char* filename)
+{
+  FILE* fp = fopen(filename, "r");
+  objects.clear();
+  char inst;
+  material mat;
+  while (not feof(fp))
+  {
+    fscanf(fp, " %c", &inst);
+    switch (inst)
+    {
+      case 'w':
+        fscanf(fp, "%d", &width);
+        break;
+      case 'h':
+        fscanf(fp, "%d", &height);
+        break;
+      case 's':
+        double x,y,z,r;
+        fscanf(fp, "%lf %lf %lf %lf", &x, &y, &z, &r);
+        fprintf(stderr, "%lf %lf %lf %lf\n",x,y,z,r);
+        objects.push_back(new sphere(this));
+        ((sphere*) objects.back())->position = v(x,y,z);
+        ((sphere*)(objects.back()))->radius = r;
+        objects.back()->rayRadius = r*1.01;
+        objects.back()->mat = mat;
+        break;
+
+      case 'm':
+        double g,b, ref, trans;
+        fscanf(fp, "%lf %lf %lf %lf %lf", &r, &g, &b, &ref, &trans);
+        mat.color.x = r;
+        mat.color.y = g;
+        mat.color.z = b;
+        mat.reflectivity = ref;
+        mat.transmittance = trans;
+        break;
+    }
+  }
 }
