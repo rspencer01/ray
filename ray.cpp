@@ -20,7 +20,7 @@ voxel integrand(v pos, v dir, int level,ray calling)
   voxel ans;
   for (object* o : current_scene.objects)
   {
-    voxel p = o->intersects(pos, pos+dir*d,dir,calling);
+    voxel p = o->intersects(pos, pos+dir*d, dir, calling);
     if (p.perm>-0)
     {
       return p;
@@ -50,7 +50,7 @@ v nextPosition(v position, v direction, double maxD)
                                                o->position,
                                                o->rayRadius,
                                                position,
-                                               direction));
+                                               direction)*0.9);
     }
   }
   minLambda = std::max(d, minLambda);

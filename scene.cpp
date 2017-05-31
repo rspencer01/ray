@@ -1,5 +1,6 @@
 #include "scene.h"
 #include "sphere.h"
+#include "glob.h"
 
 scene::scene()
 {
@@ -43,6 +44,7 @@ void scene::loadFromFile(const char* filename)
   while (not feof(fp))
   {
     fscanf(fp, " %c", &inst);
+    if (feof(fp)) break;
     switch (inst)
     {
       case 'w':
@@ -70,6 +72,22 @@ void scene::loadFromFile(const char* filename)
         mat.color.z = b;
         mat.reflectivity = ref;
         mat.transmittance = trans;
+        break;
+
+      case 'g':
+        int c;
+        fscanf(fp, "%d %lf %lf", &c, &x, &y);
+        objects.push_back(new glob(this));
+        objects.back()->mat = mat;
+        ((glob*)objects.back())->sigma = y;
+        ((glob*)objects.back())->setRadius(x);
+        for (int i = 0; i < c; ++i)
+        {
+          fscanf(fp, "%lf %lf %lf", &x, &y, &z);
+          ((glob*)objects.back())->addControl(v(x,y,z));
+        }
+        break;
+      default:
         break;
     }
   }
