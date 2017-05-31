@@ -2,7 +2,7 @@ CXX=g++
 CFLAGS=-O3 -MMD -lm --std=c++0x -ffloat-store -Wall
 TARGET=ray
 BUILD_DIR=build
-SRCS=$(shell find . -name "*.cpp")
+SRCS=$(shell find . -maxdepth 1 -name "*.cpp")
 OBJS=$(patsubst ./%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
 
 all: $(TARGET)
