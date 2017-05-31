@@ -27,6 +27,6 @@ voxel material::getInteraction(
   float f = (!parentScene->sundir)%normal;
   ray sd = ray(position,parentScene->sundir,v(0,0,0),callingRay.level+1);
   if (f>0)
-    ans.ray_contributions.push_back(std::make_pair(sd,color*f*(1-reflectivity)));
+    ans.ray_contributions.push_back(std::make_pair(sd,color*f));
   return ans;
 }

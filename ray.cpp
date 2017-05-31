@@ -18,6 +18,8 @@ const char* _help =
 voxel integrand(v pos, v dir, int level,ray calling)
 {
   voxel ans;
+  ans.perm = 0;
+  ans.local_color = v(0,0,0);
   for (object* o : current_scene.objects)
   {
     voxel p = o->intersects(pos, pos+dir*d, dir, calling);
@@ -79,11 +81,11 @@ void trace(ray &ry)
     // with its alpha (`trans`)
     immediate = integrand(position, ry.direction, ry.level+1, ry);
     // Update the color
-    color = color + immediate.local_color * p * immediate.perm;
+    color = color + immediate.local_color * p;
     for (int j = 0; j<immediate.ray_contributions.size();++j)
     {
       trace(immediate.ray_contributions[j].first);
-      color = color +immediate.ray_contributions[j].first.color*immediate.ray_contributions[j].second * immediate.perm * p;
+      color = color + immediate.ray_contributions[j].first.color*immediate.ray_contributions[j].second * p;
     }
 
     // Update the transmission coefficient
