@@ -6,6 +6,7 @@ material::material()
   color = v(R(),R()/3,R()/2);
   reflectivity = R()*0.8;
   transmittance = R()*0.8;
+  ior = 1.3;
 }
 
 voxel material::getInteraction(
@@ -28,5 +29,7 @@ voxel material::getInteraction(
   ray sd = ray(position,parentScene->sundir,v(0,0,0),callingRay.level+1);
   if (f>0)
     ans.ray_contributions.push_back(std::make_pair(sd,color*f));
+
+  callingRay.direction = refract(direction, normal, ior);
   return ans;
 }

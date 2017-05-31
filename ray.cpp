@@ -15,7 +15,7 @@ void trace(ray&);
 const char* _help =
 "Usage: ray <scenefile>";
 
-voxel integrand(v pos, v dir, int level,ray calling)
+voxel integrand(v pos, v dir, int level,ray& calling)
 {
   voxel ans;
   ans.perm = 0;

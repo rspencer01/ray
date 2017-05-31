@@ -8,6 +8,17 @@ v mirror(v dir,v norm)
   return t + t-dir;
 }
 
+v refract(v dir, v normal, float index)
+{
+  dir = dir*(-1/(dir%normal));
+  v q = (normal - dir) * index;
+  v ans =!((normal*-1) + q) ;
+  dir = !dir;
+  if (ans % normal < 0)
+    return !dir * -1;
+  return ans * -1;
+}
+
 double clamp(double a, double min, double max)
 {
   return a<min?min:(a>max?max:a);
