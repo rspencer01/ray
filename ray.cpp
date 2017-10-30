@@ -74,7 +74,6 @@ void update_pixels_from_primary_ray(ray& ry)
   buffer[(current_scene.height-1-ry.pixely)*current_scene.width*3 + ry.pixelx*3  ] = (unsigned char)pixel.x;
   buffer[(current_scene.height-1-ry.pixely)*current_scene.width*3 + ry.pixelx*3+1] = (unsigned char)pixel.y;
   buffer[(current_scene.height-1-ry.pixely)*current_scene.width*3 + ry.pixelx*3+2] = (unsigned char)pixel.z;
-  fprintf(outputFile,"%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
 }
 
 void trace(ray &ry)
@@ -144,9 +143,6 @@ int main(int argc, char* argv[])
 
   init_raylog();
 
-  outputFile = fopen("out.ppm","wb");
-  // Output preamble
-  fprintf(outputFile,"P6 %d %d 255 ",current_scene.width ,current_scene.height);
   // Camera viewpoint
   v viewpoint = v(0,0,-1);
   // The buffer
@@ -177,6 +173,14 @@ int main(int argc, char* argv[])
       count++;
     }
   }
+  // Write to output
+  outputFile = fopen("out.ppm","wb");
+  // Output preamble
+  fprintf(outputFile,"P6 %d %d 255 ",current_scene.width ,current_scene.height);
+  for(int y=current_scene.height; y--;)
+    for(int x=current_scene.width; x--;)
+      for(int k=0;k<3;++k)
+      fprintf(outputFile,"%c",buffer[y*current_scene.width*3 + x*3 + k]);
   fclose(outputFile);
   print_raylog();
   gui_pause();
