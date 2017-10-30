@@ -3,6 +3,7 @@
 #include "vector3.h"
 #include "utils.h"
 #include "gui.h"
+#include "rayqueue.h"
 #include "ray.h"
 #include "raylog.h"
 #include "sphere.h"
@@ -147,8 +148,9 @@ int main(int argc, char* argv[])
   v viewpoint = v(0,0,-1);
   // The buffer
   buffer = new unsigned char[current_scene.height*current_scene.width*3];
+  // The queu
+  rayqueue queue;
   // Iterate through all pixels in screen
-  int count = 0;
   for(int y=current_scene.height; y--;)
   {
     // Pretty progress bar
@@ -162,17 +164,31 @@ int main(int argc, char* argv[])
       // Calculate the direction for this pixel
       v direction = calculateDirection(x/(double)current_scene.width, y/(double)current_scene.height);
       // Construct the ray
-      ray primary = ray(viewpoint, direction, v(0,0,0), 0);
-      primary.pixelx = x;
-      primary.pixely = y;
-      // Trace the ray
-      trace(primary);
-      // Display
-      if (count%(current_scene.height/3) == 0)
-        update_image(buffer, current_scene.height, current_scene.width);
-      count++;
+      ray* primary = new ray(viewpoint, direction, v(0,0,0), 0);
+      primary->pixelx = x;
+      primary->pixely = y;
+      // Add to the queue
+      queue.add(primary);
     }
   }
+
+  queue.shuffle();
+
+  int count = 0;
+  while (not queue.empty())
+  {
+    ray *primaryp = queue.remove();
+    ray primary = *primaryp;
+    // Trace the ray
+    trace(primary);
+    // Clean up
+    free(primaryp);
+    // Display
+    if (count%(current_scene.height/3) == 0)
+      update_image(buffer, current_scene.height, current_scene.width);
+    count++;
+  }
+  update_image(buffer, current_scene.height, current_scene.width);
   // Write to output
   outputFile = fopen("out.ppm","wb");
   // Output preamble
