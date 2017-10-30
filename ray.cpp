@@ -2,6 +2,7 @@
 #include <math.h>
 #include "vector3.h"
 #include "utils.h"
+#include "gui.h"
 #include "ray.h"
 #include "raylog.h"
 #include "sphere.h"
@@ -118,6 +119,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   current_scene.loadFromFile(argv[1]);
+  init_window();
 
   init_raylog();
 
@@ -126,7 +128,10 @@ int main(int argc, char* argv[])
   fprintf(outputFile,"P6 %d %d 255 ",current_scene.width ,current_scene.height);
   // Camera viewpoint
   v viewpoint = v(0,0,-1);
+  // The buffer
+  unsigned char buffer[current_scene.height][current_scene.width][3];
   // Iterate through all pixels in screen
+  int count = 0;
   for(int y=current_scene.height; y--;)
   {
     // Pretty progress bar
@@ -150,9 +155,18 @@ int main(int argc, char* argv[])
       pixel.y = atan(pixel.y/100)/(3.1415/2)*255;
       pixel.z = atan(pixel.z/100)/(3.1415/2)*255;
       // Output to image
+      buffer[current_scene.height-1-y][x][0] = (unsigned char)pixel.x;
+      buffer[current_scene.height-1-y][x][1] = (unsigned char)pixel.y;
+      buffer[current_scene.height-1-y][x][2] = (unsigned char)pixel.z;
       fprintf(outputFile,"%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
+      // Display
+      if (count%200 == 0)
+        update_image(buffer, current_scene.height, current_scene.width);
+      count++;
     }
   }
   fclose(outputFile);
   print_raylog();
+  gui_pause();
+  destroy_window();
 }

@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-O3 -MMD -lm --std=c++0x -ffloat-store -Wall
+CFLAGS=-O3 -MMD -lm --std=c++0x -ffloat-store -Wall -lSDL2
 TARGET=ray
 BUILD_DIR=build
 SRCS=$(shell find . -maxdepth 1 -name "*.cpp")
