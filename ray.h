@@ -13,13 +13,16 @@ struct ray
   int level;
   bool alive;
   long hash;
+  int pixelx, pixely;
 
   ray()
   {
     completed = false;
     alive = true;
     hash = rand();
+    pixelx = pixely = -1;
   };
+
   ray(v _position, v _direction, v _color=v(0,0,0), int _level=0)
   {
     position = _position;
@@ -29,6 +32,7 @@ struct ray
     completed = false;
     alive = true;
     hash = rand();
+    pixelx = pixely = -1;
   };
 };
 

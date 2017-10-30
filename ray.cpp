@@ -13,6 +13,8 @@ scene current_scene;
 double d = 1e-2;
 #define RAY_LENGTH 10
 void trace(ray&);
+unsigned char* buffer;
+FILE* outputFile;
 const char* _help =
 "Usage: ray <scenefile>";
 
@@ -58,6 +60,21 @@ v nextPosition(v position, v direction, double maxD)
   }
   minLambda = std::max(d, minLambda);
   return position + !direction * minLambda;
+}
+
+void update_pixels_from_primary_ray(ray& ry)
+{
+  // Post processing
+  v pixel = ry.color*255;
+  // Atan to prevent overbrightness
+  pixel.x = atan(pixel.x/100)/(3.1415/2)*255;
+  pixel.y = atan(pixel.y/100)/(3.1415/2)*255;
+  pixel.z = atan(pixel.z/100)/(3.1415/2)*255;
+  // Output to image
+  buffer[(current_scene.height-1-ry.pixely)*current_scene.width*3 + ry.pixelx*3  ] = (unsigned char)pixel.x;
+  buffer[(current_scene.height-1-ry.pixely)*current_scene.width*3 + ry.pixelx*3+1] = (unsigned char)pixel.y;
+  buffer[(current_scene.height-1-ry.pixely)*current_scene.width*3 + ry.pixelx*3+2] = (unsigned char)pixel.z;
+  fprintf(outputFile,"%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
 }
 
 void trace(ray &ry)
@@ -107,6 +124,10 @@ void trace(ray &ry)
   ry.color = color;
   ry.completed = true;
 
+  // Update the image if needbe
+  if (ry.pixelx != -1)
+    update_pixels_from_primary_ray(ry);
+
   // Finally, log that this ray is complete
   log_ray_end(ry);
 }
@@ -123,13 +144,13 @@ int main(int argc, char* argv[])
 
   init_raylog();
 
-  FILE* outputFile = fopen("out.ppm","wb");
+  outputFile = fopen("out.ppm","wb");
   // Output preamble
   fprintf(outputFile,"P6 %d %d 255 ",current_scene.width ,current_scene.height);
   // Camera viewpoint
   v viewpoint = v(0,0,-1);
   // The buffer
-  unsigned char buffer[current_scene.height][current_scene.width][3];
+  buffer = new unsigned char[current_scene.height*current_scene.width*3];
   // Iterate through all pixels in screen
   int count = 0;
   for(int y=current_scene.height; y--;)
@@ -146,21 +167,12 @@ int main(int argc, char* argv[])
       v direction = calculateDirection(x/(double)current_scene.width, y/(double)current_scene.height);
       // Construct the ray
       ray primary = ray(viewpoint, direction, v(0,0,0), 0);
+      primary.pixelx = x;
+      primary.pixely = y;
       // Trace the ray
       trace(primary);
-      // Pos processing
-      v pixel = primary.color*255;
-      // Atan to prevent overbrightness
-      pixel.x = atan(pixel.x/100)/(3.1415/2)*255;
-      pixel.y = atan(pixel.y/100)/(3.1415/2)*255;
-      pixel.z = atan(pixel.z/100)/(3.1415/2)*255;
-      // Output to image
-      buffer[current_scene.height-1-y][x][0] = (unsigned char)pixel.x;
-      buffer[current_scene.height-1-y][x][1] = (unsigned char)pixel.y;
-      buffer[current_scene.height-1-y][x][2] = (unsigned char)pixel.z;
-      fprintf(outputFile,"%c%c%c",(unsigned int)pixel.x,(unsigned int)pixel.y,(unsigned int)pixel.z);
       // Display
-      if (count%200 == 0)
+      if (count%(current_scene.height/3) == 0)
         update_image(buffer, current_scene.height, current_scene.width);
       count++;
     }
