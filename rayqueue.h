@@ -2,6 +2,7 @@
 #define __RAY_QUEUE__
 
 #include <vector>
+#include <mutex>
 #include "ray.h"
 
 struct rayqueue
@@ -11,6 +12,8 @@ struct rayqueue
   ray* remove();
   void shuffle();
   bool empty();
+  private:
+    std::mutex mutex;
 };
 
 #endif

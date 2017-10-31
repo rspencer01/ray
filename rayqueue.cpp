@@ -8,8 +8,10 @@ void rayqueue::add(ray* ry)
 
 ray* rayqueue::remove()
 {
+  mutex.lock();
   ray* ans = elements.back();
   elements.pop_back();
+  mutex.unlock();
   return ans;
 }
 

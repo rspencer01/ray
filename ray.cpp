@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <math.h>
+#include <thread>
+#include <chrono>
 #include "vector3.h"
 #include "utils.h"
 #include "gui.h"
@@ -15,7 +17,9 @@ double d = 1e-2;
 #define RAY_LENGTH 10
 void trace(ray&);
 unsigned char* buffer;
+std::thread *workers;
 FILE* outputFile;
+rayqueue queue;
 const char* _help =
 "Usage: ray <scenefile>";
 
@@ -132,6 +136,19 @@ void trace(ray &ry)
   log_ray_end(ry);
 }
 
+void worker_task(int id)
+{
+  while (not queue.empty())
+  {
+    ray *primaryp = queue.remove();
+    ray primary = *primaryp;
+    // Trace the ray
+    trace(primary);
+    // Clean up
+    free(primaryp);
+  }
+}
+
 int main(int argc, char* argv[])
 {
   if (argc != 2)
@@ -140,6 +157,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   current_scene.loadFromFile(argv[1]);
+
   init_window();
 
   init_raylog();
@@ -148,8 +166,6 @@ int main(int argc, char* argv[])
   v viewpoint = v(0,0,-1);
   // The buffer
   buffer = new unsigned char[current_scene.height*current_scene.width*3];
-  // The queu
-  rayqueue queue;
   // Iterate through all pixels in screen
   for(int y=current_scene.height; y--;)
   {
@@ -174,21 +190,25 @@ int main(int argc, char* argv[])
 
   queue.shuffle();
 
-  int count = 0;
+  // Set up the worker threads
+  int thread_count = 3;
+  workers = new std::thread[thread_count];
+  for (int i = 0;i<thread_count;++i)
+  {
+    workers[i] = std::thread(worker_task, i);
+  }
+
   while (not queue.empty())
   {
-    ray *primaryp = queue.remove();
-    ray primary = *primaryp;
-    // Trace the ray
-    trace(primary);
-    // Clean up
-    free(primaryp);
-    // Display
-    if (count%(current_scene.height/3) == 0)
-      update_image(buffer, current_scene.height, current_scene.width);
-    count++;
+    std::this_thread::sleep_for (std::chrono::seconds(1));
+    update_image(buffer, current_scene.height, current_scene.width);
   }
   update_image(buffer, current_scene.height, current_scene.width);
+
+  // Clean up threading
+  for (int i = 0;i<thread_count;++i)
+    workers[i].join();
+
   // Write to output
   outputFile = fopen("out.ppm","wb");
   // Output preamble
