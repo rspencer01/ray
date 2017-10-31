@@ -12,6 +12,7 @@ struct rayqueue
   ray* remove();
   void shuffle();
   bool empty();
+  int size();
   private:
     std::mutex mutex;
 };

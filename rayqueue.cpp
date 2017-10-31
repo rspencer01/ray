@@ -20,6 +20,11 @@ bool rayqueue::empty()
   return elements.empty();
 }
 
+int rayqueue::size()
+{
+  return elements.size();
+}
+
 void rayqueue::shuffle()
 {
   std::random_shuffle(elements.begin(), elements.end());

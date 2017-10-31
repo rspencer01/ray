@@ -169,12 +169,6 @@ int main(int argc, char* argv[])
   // Iterate through all pixels in screen
   for(int y=current_scene.height; y--;)
   {
-    // Pretty progress bar
-    for (int i = 80 - 80*y/current_scene.height; i--;)
-      printf("o");
-    for (int i = 80*y/current_scene.height; i--;)
-      printf(".");
-    printf("\r"); fflush(stdout);
     for(int x=current_scene.width; x--;)
     {
       // Calculate the direction for this pixel
@@ -200,7 +194,17 @@ int main(int argc, char* argv[])
 
   while (not queue.empty())
   {
+    // Pretty progress bar
+    int total = current_scene.height * current_scene.width;
+    for (int i = 80 - 80*queue.size()/total; i--;)
+      printf("o");
+    for (int i = 80*queue.size()/total; i--;)
+      printf(".");
+    printf("\r"); fflush(stdout);
+
+    // No need to stay up.
     std::this_thread::sleep_for (std::chrono::seconds(1));
+
     update_image(buffer, current_scene.height, current_scene.width);
   }
   update_image(buffer, current_scene.height, current_scene.width);
