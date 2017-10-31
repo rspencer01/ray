@@ -13,6 +13,8 @@ struct object
   scene* parentScene;
   material mat;
   object(scene* _parentScene);
+  virtual double nextPosition(v position, v direction);
+  virtual bool rayIntersects(v position, v direction);
   virtual voxel intersects(v position, v nextPosition, v direction, ray& callingRay);
   virtual bool inside(v position);
   virtual bool intersects(v position, v nextPosition);

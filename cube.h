@@ -12,6 +12,8 @@ struct cube : public object
   cube(scene* _parentScene);
   bool inside(v position);
   v getNormal(v position, v nextPosition);
+  bool rayIntersects(v position, v direction);
+  double nextPosition(v position, v direction);
 };
 
 #endif

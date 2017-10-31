@@ -44,23 +44,12 @@ v nextPosition(v position, v direction, double maxD)
   double minLambda = maxD;
   for (object* o : current_scene.objects)
   {
-    if (norm(position - o->position) < o->rayRadius)
+    if (o->rayIntersects(position,direction))
     {
-      minLambda = d;
-      break;
-    }
-    if (intersectSphere(o->position,
-                        o->rayRadius,
-                        position,
-                        direction))
-    {
-      minLambda = std::min(
-                           minLambda,
-                           intersectSphereDist(
-                                               o->position,
-                                               o->rayRadius,
-                                               position,
-                                               direction)*0.9);
+      minLambda = std::min(minLambda,
+                           o->nextPosition(
+                             position,
+                             direction))*0.9;
     }
   }
   minLambda = std::max(d, minLambda);

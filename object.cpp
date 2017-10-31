@@ -29,3 +29,21 @@ bool object::inside(v position)
 {
   return false;
 }
+
+bool object::rayIntersects(v position, v direction)
+{
+  if (inside(position))
+    return true;
+  return intersectSphere(this->position,
+                         this->rayRadius,
+                         position,
+                         direction);
+}
+
+double object::nextPosition(v position, v direction)
+{
+  return intersectSphereDist(this->position,
+                             this->rayRadius,
+                             position,
+                             direction);
+}
