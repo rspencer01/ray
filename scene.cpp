@@ -1,5 +1,6 @@
 #include "scene.h"
 #include "sphere.h"
+#include "cube.h"
 #include "glob.h"
 
 scene::scene()
@@ -56,13 +57,20 @@ void scene::loadFromFile(const char* filename)
       case 's':
         double x,y,z,r;
         fscanf(fp, "%lf %lf %lf %lf", &x, &y, &z, &r);
-        fprintf(stderr, "%lf %lf %lf %lf\n",x,y,z,r);
         objects.push_back(new sphere(this));
         ((sphere*) objects.back())->position = v(x,y,z);
         ((sphere*)(objects.back()))->radius = r;
         objects.back()->rayRadius = r*1.01;
         objects.back()->mat = mat;
         break;
+
+      case 'c':
+        fscanf(fp, "%lf %lf %lf %lf", &x, &y, &z, &r);
+        objects.push_back(new cube(this));
+        ((cube*) objects.back())->position = v(x,y,z);
+        ((cube*)(objects.back()))->sideLength = r;
+        objects.back()->rayRadius = r*1.5;
+        objects.back()->mat = mat;
 
       case 'm':
         double g,b, ref, trans;
